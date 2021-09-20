@@ -54,8 +54,10 @@ export default {
     sideNav: false,
     menuItems: [
       { title: "Productos", link: "/productos" },
-      { title: "Servicios", link: "/servicio" },
-      { title: "Tienda", link: "/tienda" },
+      { title: "Linea", link: "/linea" },
+      { title: "Sublineas", link: "/sublineas" },
+      { title: "Movimiento", link: "/movimiento" },
+      { title: "Articulos Movimiento", link: "/articulo-movimiento" },
     ],
   }),
   methods: {

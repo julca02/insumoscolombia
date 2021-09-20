@@ -23,7 +23,14 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn rounded color="#1E8449" dark class="mb-2" v-bind="attrs" v-on="on">
+            <v-btn
+              rounded
+              color="#1E8449"
+              dark
+              class="mb-2"
+              v-bind="attrs"
+              v-on="on"
+            >
               Nuevo producto
             </v-btn>
           </template>
@@ -38,23 +45,31 @@
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.codigo_producto"
+                       :rules="codeRules"
                       label="Código del producto"
+                      required
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.id_linea"
+                      :rules="codeRules"
                       label="Código de línea"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.id_sublinea"
+                      :rules="codeRules"
                       label="Código de sublinea"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="12" md="12">
                     <v-textarea
+                      clearable
+                      clear-icon="mdi-close-circle"
+                      :counter="256"
+                      :rules="nameRules"
                       v-model="editedItem.descripcion"
                       label="Nueva descripción"
                       auto-grow
@@ -81,7 +96,18 @@
               <v-btn color="#1E8449" rounded outlined @click="close">
                 Cancelar
               </v-btn>
-              <v-btn color="#1E8449" rounded outlined @click="save"> Guardar </v-btn>
+              <v-btn
+                color="#1E8449"
+                rounded
+                outlined
+                @click="save"
+                :disabled="
+                  editedItem.codigo_producto < 1 ||
+                  editedItem.descripcion === ''
+                "
+              >
+                Guardar
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -105,8 +131,12 @@
       </v-toolbar>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)" color="#BBDEFB"> mdi-pencil </v-icon>
-      <v-icon small @click="deleteItem(item)" color="#E57373"> mdi-delete </v-icon>
+      <v-icon small class="mr-2" @click="editItem(item)" color="#BBDEFB">
+        mdi-pencil
+      </v-icon>
+      <v-icon small @click="deleteItem(item)" color="#E57373">
+        mdi-delete
+      </v-icon>
     </template>
     <template v-slot:no-data>
       <v-btn color="primary" @click="getProducts"> Reiniciar </v-btn>
@@ -118,7 +148,7 @@ import {
   getProducts,
   createProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
 } from "@/services/ProductsAPI";
 export default {
   data: () => ({
@@ -135,7 +165,7 @@ export default {
       { text: "Codigo Producto", value: "codigo_producto" },
       { text: "Código Linea", value: "id_linea" },
       { text: "Código Sublinea", value: "id_sublinea" },
-      { text: "Descriptción", value: "descripcion" },
+      { text: "Descripción", value: "descripcion" },
       { text: "Costo último", value: "costo_ultimo" },
       { text: "Stock", value: "stock" },
       { text: "Fecha de creación", value: `created_at` },
@@ -162,6 +192,15 @@ export default {
       costo_ultimo: 0,
       stock: 0,
     },
+    valid: true,
+    codeRules: [
+      (v) => !!v || "El codigo es requerido",
+      v => (v && v.length <= 10) || 'El codigo debe de ser menor a 10 caracteres',
+    ],
+    nameRules: [
+      (v) => !!v || "Descripcion es requerida",
+      (v) => (v && v.length <= 256) || "El texto no puede superar los 256 caracteres",
+    ],
   }),
 
   computed: {
@@ -235,7 +274,7 @@ export default {
         this.getProducts();
       }
       this.close();
-    },
+    }
   },
 };
 </script>
