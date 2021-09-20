@@ -15,21 +15,19 @@
     <v-app-bar app color="white" dense dark hide-on-scroll height="80">
       <v-container class="d-flex justify-center">
         <a href="/" class="ma-auto">
-        <v-avatar size="64">
           <v-img
             lazy-src="https://picsum.photos/id/11/10/6"
-            max-height="100"
-            max-width="100"
-            src="https://www.rake.mx/assets/mision.png"
+            max-height="300"
+            max-width="300"
+            src="@/assets/logo.svg"
           ></v-img>
-        </v-avatar>
         </a>
 
         <v-spacer></v-spacer>
         <v-app-bar-nav-icon
           @click.stop="sideNav = !sideNav"
           class="hidden-lg-and-up"
-          ><v-icon color="primary" large
+          ><v-icon color="#1E8449" large
             >mdi-microsoft-xbox-controller-menu</v-icon
           ></v-app-bar-nav-icon
         >
@@ -37,7 +35,7 @@
         <v-btn
           small
           rounded
-          color="primary"
+          color="#1E8449 "
           text
           class="hidden-md-and-down ma-auto"
           v-for="(item, i) in menuItems"

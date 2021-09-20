@@ -6,7 +6,7 @@
     sort-by="calories"
     class="elevation-1"
     :loading="loading"
-    loading-text="Loading... Please wait"
+    loading-text="Cargando...Espera"
   >
     <template v-slot:top>
       <v-toolbar flat>
@@ -23,7 +23,7 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+            <v-btn rounded color="#1E8449" dark class="mb-2" v-bind="attrs" v-on="on">
               Nuevo producto
             </v-btn>
           </template>
@@ -78,10 +78,10 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">
+              <v-btn color="#1E8449" rounded outlined @click="close">
                 Cancelar
               </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Guardar </v-btn>
+              <v-btn color="#1E8449" rounded outlined @click="save"> Guardar </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -92,10 +92,10 @@
             >
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
+              <v-btn color="blue darken-1" rounded text @click="closeDelete"
                 >Cancelar</v-btn
               >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+              <v-btn color="#E74C3C" rounded text @click="deleteItemConfirm"
                 >OK</v-btn
               >
               <v-spacer></v-spacer>
@@ -138,7 +138,7 @@ export default {
       { text: "Descriptción", value: "descripcion" },
       { text: "Costo último", value: "costo_ultimo" },
       { text: "Stock", value: "stock" },
-      { text: "Fecha de creación", value: "created_at" },
+      { text: "Fecha de creación", value: `created_at` },
       { text: "Acciones", value: "actions" },
     ],
     loading: true,
@@ -239,6 +239,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>
