@@ -45,17 +45,20 @@
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.codigo_producto"
-                       :rules="codeRules"
+                      :rules="codeRules"
                       label="Código del producto"
                       required
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.id_linea"
-                      :rules="codeRules"
-                      label="Código de línea"
-                    ></v-text-field>
+                    <v-select
+                      v-model="linea"
+                      label="lineas"
+                      :items="lineas"
+                      item-text="descripcion"
+                      item-value="codigo"
+                      return-object
+                    ></v-select>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
@@ -150,6 +153,7 @@ import {
   updateProduct,
   deleteProduct,
 } from "@/services/ProductsAPI";
+import { getLines } from "@/services/LinesAPI";
 export default {
   data: () => ({
     dialog: false,
@@ -173,33 +177,44 @@ export default {
     ],
     loading: true,
     productos: [],
+    lineas: [],
+    linea: "",
     editedIndex: -1,
     editedItem: {
       id: 0,
       codigo_producto: 0,
-      id_linea: 0,
       id_sublinea: 0,
       descripcion: "",
       costo_ultimo: 0,
       stock: 0,
+      linea: {
+        codigo: 0,
+        descripcion: "",
+      },
     },
     defaultItem: {
       id: 0,
       codigo_producto: 0,
-      id_linea: 0,
       id_sublinea: 0,
       descripcion: "",
       costo_ultimo: 0,
       stock: 0,
+      linea: {
+        codigo: 0,
+        descripcion: "",
+      },
     },
     valid: true,
     codeRules: [
       (v) => !!v || "El codigo es requerido",
-      v => (v && v.length <= 10) || 'El codigo debe de ser menor a 10 caracteres',
+      (v) =>
+        (v && v.length <= 10) || "El codigo debe de ser menor a 10 caracteres",
     ],
     nameRules: [
       (v) => !!v || "Descripcion es requerida",
-      (v) => (v && v.length <= 256) || "El texto no puede superar los 256 caracteres",
+      (v) =>
+        (v && v.length <= 256) ||
+        "El texto no puede superar los 256 caracteres",
     ],
   }),
 
@@ -222,6 +237,7 @@ export default {
 
   created() {
     this.getProducts();
+    this.listLines();
   },
 
   methods: {
@@ -230,9 +246,13 @@ export default {
       this.productos = response.data;
       this.loading = false;
     },
-
+    async listLines() {
+      let response = await getLines();
+      this.lineas = response.data;
+    },
     editItem(item) {
       this.editedIndex = this.productos.indexOf(item);
+      this.linea = item ? item.codigo : "";
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
@@ -255,6 +275,7 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       });
+      this.linea = "";
     },
 
     closeDelete() {
@@ -270,11 +291,18 @@ export default {
         await updateProduct(this.editedItem.id, this.editedItem);
         this.getProducts();
       } else {
-        await createProduct(this.editedItem);
+        await createProduct({
+          codigo_producto: this.editedItem.codigo_producto,
+          descripcion: this.editedItem.descripcion,
+          id_linea: this.linea.codigo,
+          id_sublinea: this.editedItem.id_sublinea,
+          costo_ultimo: this.editedItem.costo_ultimo,
+          stock: this.editedItem.stock
+        });
         this.getProducts();
       }
       this.close();
-    }
+    },
   },
 };
 </script>
