@@ -1,9 +1,5 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="movimiento"
-    class="elevation-1"
-  >
+  <v-data-table :headers="headers" :items="movimiento" class="elevation-1">
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title>Movimientos</v-toolbar-title>
@@ -24,18 +20,15 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.codigo_mov"
-                      label="Codigo del movimiento"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
                     <v-select
-                      v-model="tipo"
+                      v-model="select"
                       label="Tipo"
-                      :items="tipos"
-                      :menu-props="{ top: true, offsetY: true }"
+                      :items="items"
+                      item-text="state"
+                      item-value="abbr"
+                      persistent-hint
                       return-object
+                      single-line
                     ></v-select>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
@@ -56,14 +49,15 @@
                       label="Valor total"
                     ></v-text-field>
                   </v-col>
-                  
                 </v-row>
               </v-container>
             </v-card-text>
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancelar </v-btn>
+              <v-btn color="blue darken-1" text @click="close">
+                Cancelar
+              </v-btn>
               <v-btn color="blue darken-1" text @click="save"> Guardar </v-btn>
             </v-card-actions>
           </v-card>
@@ -88,17 +82,24 @@
       </v-toolbar>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)" color="blue"> mdi-pencil </v-icon>
+      <v-icon small class="mr-2" @click="editItem(item)" color="blue">
+        mdi-pencil
+      </v-icon>
       <v-icon small @click="deleteItem(item)" color="red"> mdi-delete </v-icon>
     </template>
     <template v-slot:no-data>
-      <v-btn color="primary" @click="getLine"> Reiniciar </v-btn>
+      <v-btn color="primary" @click="getMovements"> Reiniciar </v-btn>
     </template>
   </v-data-table>
 </template>
 
 <script>
-import { getMovement } from "@/services/MovementAPI";
+import {
+  getMovement,
+  createMovement,
+  updateMovement,
+  deleteMovement
+} from "@/services/MovementAPI";
 export default {
   data: () => ({
     dialog: false,
@@ -109,13 +110,10 @@ export default {
         align: "start",
         value: "id",
       },
-      { text: "Codigo", value: "codigo" },
-      { text: "Descripcion", value: "descripcion" },
-      { text: "Descripcion", value: "descripcion" },
       { text: "Movimiento", value: "tipo_mov" },
-      { text: "Cedula", value: "ceduala_move" },
+      { text: "Cedula", value: "cedula_mov" },
       { text: "Nombre", value: "nombre_mov" },
-        { text: "Fecha de creación", value: `created_at` },
+      { text: "Fecha de creación", value: `created_at` },
       { text: "Valor", value: "valor_total_mov" },
       { text: "Actions", value: "actions", sortable: false },
     ],
@@ -125,16 +123,21 @@ export default {
     editedIndex: -1,
     editedItem: {
       id: 0,
-      codigo: 0,
-      descripcion: "",
+      cedula_mov: 0,
+      nombre_mov: "",
+      valor_total_mov: 0,
     },
     defaultItem: {
       id: 0,
-      codigo: 0,
-      descripcion: "",
+      cedula_mov: 0,
+      nombre_mov: "",
+      valor_total_mov: 0,
     },
-
-    tipos: ['Entrada', 'Salida']
+    select: { state: "Entrada", abbr: 0 },
+    items: [
+      { state: "Entrada", abbr: 0 },
+      { state: "Salida", abbr: 1 },
+    ],
   }),
 
   computed: {
@@ -153,30 +156,31 @@ export default {
   },
 
   created() {
-    this.getMovement();
+    this.getMovements();
   },
 
   methods: {
-    async getMovement() {
+    async getMovements() {
       let response = await getMovement();
-      this.linea = response.data;
+      this.movimiento = response.data;
       this.loading = false;
     },
 
     editItem(item) {
-      this.editedIndex = this.linea.indexOf(item);
+      this.editedIndex = this.movimiento.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.linea.indexOf(item);
+      this.editedIndex = this.movimiento.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
-    deleteItemConfirm() {
-      this.linea.splice(this.editedIndex, 1);
+    async deleteItemConfirm() {
+      await deleteMovement(this.editedItem.id)
+      this.getMovements()
       this.closeDelete();
     },
 
@@ -198,11 +202,15 @@ export default {
 
     async save() {
       if (this.editedIndex > -1) {
-        
-        this.getLine();
+        const data = this.editedItem;
+        const select = this.select.abbr;
+        await updateMovement(this.editedItem.id, { ...data, tipo_mov: select });
+        this.getMovements();
       } else {
-       
-        this.getLine();
+      const data = this.editedItem;
+        const select = this.select.abbr;
+        await createMovement({ ...data, tipo_mov: select });
+        this.getMovements();
       }
       this.close();
     },
