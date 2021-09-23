@@ -3,7 +3,6 @@
     :search="search"
     :headers="headers"
     :items="productos"
-    sort-by="calories"
     class="elevation-1"
     :loading="loading"
     loading-text="Cargando...Espera"
@@ -51,21 +50,24 @@
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-select
-                      v-model="linea"
-                      label="lineas"
-                      :items="lineas"
-                      item-text="descripcion"
-                      item-value="codigo"
-                      return-object
-                    ></v-select>
+                      <v-select
+                        v-model="linea"
+                        label="lineas"
+                        :items="lineas"
+                        item-text="descripcion"
+                        item-value="codigo"
+                        return-object
+                      ></v-select>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.id_sublinea"
-                      :rules="codeRules"
-                      label="Código de sublinea"
-                    ></v-text-field>
+                    <v-select
+                        v-model="sublinea"
+                        label="Sublineas"
+                        :items="sublineas"
+                        item-text="descripcion"
+                        item-value="codigo"
+                        return-object
+                      ></v-select>
                   </v-col>
                   <v-col cols="12" sm="12" md="12">
                     <v-textarea
@@ -154,6 +156,7 @@ import {
   deleteProduct,
 } from "@/services/ProductsAPI";
 import { getLines } from "@/services/LinesAPI";
+import { getSubline } from '@/services/SublineAPI';
 export default {
   data: () => ({
     dialog: false,
@@ -179,14 +182,19 @@ export default {
     productos: [],
     lineas: [],
     linea: "",
+    sublineas: [],
+    sublinea: "",
     editedIndex: -1,
     editedItem: {
       id: 0,
       codigo_producto: 0,
-      id_sublinea: 0,
       descripcion: "",
       costo_ultimo: 0,
       stock: 0,
+      sublinea: {
+        codigo: 0,
+        descripcion: ""
+      },
       linea: {
         codigo: 0,
         descripcion: "",
@@ -199,6 +207,10 @@ export default {
       descripcion: "",
       costo_ultimo: 0,
       stock: 0,
+      sublinea: {
+        codigo: 0,
+        descripcion: ""
+      },
       linea: {
         codigo: 0,
         descripcion: "",
@@ -238,6 +250,7 @@ export default {
   created() {
     this.getProducts();
     this.listLines();
+    this.ListSublines()
   },
 
   methods: {
@@ -249,6 +262,10 @@ export default {
     async listLines() {
       let response = await getLines();
       this.lineas = response.data;
+    },
+    async ListSublines(){
+      const response = await getSubline();
+      this.sublineas = response.data;
     },
     editItem(item) {
       this.editedIndex = this.productos.indexOf(item);
@@ -276,6 +293,7 @@ export default {
         this.editedIndex = -1;
       });
       this.linea = "";
+      this.sublinea = "";
     },
 
     closeDelete() {
@@ -295,7 +313,7 @@ export default {
           codigo_producto: this.editedItem.codigo_producto,
           descripcion: this.editedItem.descripcion,
           id_linea: this.linea.codigo,
-          id_sublinea: this.editedItem.id_sublinea,
+          id_sublinea: this.sublinea.codigo,
           costo_ultimo: this.editedItem.costo_ultimo,
           stock: this.editedItem.stock
         });

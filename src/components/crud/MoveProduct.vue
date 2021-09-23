@@ -1,18 +1,18 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="linea"
+    :items="movimiento"
     class="elevation-1"
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Linea producto</v-toolbar-title>
+        <v-toolbar-title>Movimientos</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              Nueva linea
+              Nuevo movimiento
             </v-btn>
           </template>
           <v-card>
@@ -25,28 +25,47 @@
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.codigo"
-                      label="Codigo"
+                      v-model="editedItem.codigo_mov"
+                      label="Codigo del movimiento"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="8">
-                    <v-textarea
-                      clearable
-                      clear-icon="mdi-close-circle"
-                      :counter="256"
-                      v-model="editedItem.descripcion"
-                      label="Nueva descripción"
-                      auto-grow
-                    ></v-textarea>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-select
+                      v-model="tipo"
+                      label="tipo"
+                      :items="tipos"
+                      item-text="descripcion"
+                      item-value="codigo"
+                      return-object
+                    ></v-select>
                   </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.cedula_mov"
+                      label="Cedula del comprador"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.nombre_mov"
+                      label="Nombre del comprador"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.valor_total_mov"
+                      label="Valor total"
+                    ></v-text-field>
+                  </v-col>
+                  
                 </v-row>
               </v-container>
             </v-card-text>
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancelar </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Guardar </v-btn>
+              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -80,7 +99,7 @@
 </template>
 
 <script>
-import { getLines, createLine, updateLine } from "@/services/LinesAPI";
+import { getLines, createLine, updateLine } from "@/services/MoveAPI";
 export default {
   data: () => ({
     dialog: false,
@@ -96,7 +115,8 @@ export default {
       { text: "Fecha creación", value: "created_at" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    linea: [],
+    loading: true,
+    movimiento: [],
     editedIndex: -1,
     editedItem: {
       id: 0,
@@ -172,7 +192,7 @@ export default {
     async save() {
       if (this.editedIndex > -1) {
         await updateLine(this.editedItem.id, this.editedItem);
-        this.getLine()
+        this.getLine();
       } else {
         await createLine(this.editedItem);
         this.getLine();

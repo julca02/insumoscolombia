@@ -6,13 +6,13 @@
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Linea producto</v-toolbar-title>
+        <v-toolbar-title>Sublinea</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              Nueva linea
+              Nueva sublinea
             </v-btn>
           </template>
           <v-card>
@@ -45,8 +45,8 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancelar </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Guardar </v-btn>
+              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { getLines, createLine, updateLine } from "@/services/LinesAPI";
+import { getSubline, createSubline, updateSubline } from "@/services/SublineAPI";
 export default {
   data: () => ({
     dialog: false,
@@ -96,6 +96,7 @@ export default {
       { text: "Fecha creación", value: "created_at" },
       { text: "Actions", value: "actions", sortable: false },
     ],
+    loading: true,
     linea: [],
     editedIndex: -1,
     editedItem: {
@@ -131,7 +132,7 @@ export default {
 
   methods: {
     async getLine() {
-      let response = await getLines();
+      let response = await getSubline();
       this.linea = response.data;
       this.loading = false;
     },
@@ -171,10 +172,10 @@ export default {
 
     async save() {
       if (this.editedIndex > -1) {
-        await updateLine(this.editedItem.id, this.editedItem);
+        await updateSubline(this.editedItem.id, this.editedItem);
         this.getLine()
       } else {
-        await createLine(this.editedItem);
+        await createSubline(this.editedItem);
         this.getLine();
       }
       this.close();
