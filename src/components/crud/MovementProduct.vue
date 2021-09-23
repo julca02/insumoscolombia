@@ -11,7 +11,7 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+            <v-btn color="#1E8449" dark class="mb-2" v-bind="attrs" v-on="on">
               Nuevo movimiento
             </v-btn>
           </template>
@@ -32,10 +32,9 @@
                   <v-col cols="12" sm="6" md="4">
                     <v-select
                       v-model="tipo"
-                      label="tipo"
+                      label="Tipo"
                       :items="tipos"
-                      item-text="descripcion"
-                      item-value="codigo"
+                      :menu-props="{ top: true, offsetY: true }"
                       return-object
                     ></v-select>
                   </v-col>
@@ -64,15 +63,15 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+              <v-btn color="blue darken-1" text @click="close"> Cancelar </v-btn>
+              <v-btn color="blue darken-1" text @click="save"> Guardar </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title class="text-h5"
-              >Are you sure you want to delete this item?</v-card-title
+              >Seguro quieres borrar este movimiento?</v-card-title
             >
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -89,17 +88,17 @@
       </v-toolbar>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      <v-icon small class="mr-2" @click="editItem(item)" color="blue"> mdi-pencil </v-icon>
+      <v-icon small @click="deleteItem(item)" color="red"> mdi-delete </v-icon>
     </template>
     <template v-slot:no-data>
-      <v-btn color="primary" @click="getLine"> Reset </v-btn>
+      <v-btn color="primary" @click="getLine"> Reiniciar </v-btn>
     </template>
   </v-data-table>
 </template>
 
 <script>
-import { getLines, createLine, updateLine } from "@/services/MoveAPI";
+import { getMovement } from "@/services/MovementAPI";
 export default {
   data: () => ({
     dialog: false,
@@ -112,11 +111,17 @@ export default {
       },
       { text: "Codigo", value: "codigo" },
       { text: "Descripcion", value: "descripcion" },
-      { text: "Fecha creación", value: "created_at" },
+      { text: "Descripcion", value: "descripcion" },
+      { text: "Movimiento", value: "tipo_mov" },
+      { text: "Cedula", value: "ceduala_move" },
+      { text: "Nombre", value: "nombre_mov" },
+        { text: "Fecha de creación", value: `created_at` },
+      { text: "Valor", value: "valor_total_mov" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     loading: true,
     movimiento: [],
+    tipo: [],
     editedIndex: -1,
     editedItem: {
       id: 0,
@@ -128,6 +133,8 @@ export default {
       codigo: 0,
       descripcion: "",
     },
+
+    tipos: ['Entrada', 'Salida']
   }),
 
   computed: {
@@ -146,12 +153,12 @@ export default {
   },
 
   created() {
-    this.getLine();
+    this.getMovement();
   },
 
   methods: {
-    async getLine() {
-      let response = await getLines();
+    async getMovement() {
+      let response = await getMovement();
       this.linea = response.data;
       this.loading = false;
     },
@@ -191,10 +198,10 @@ export default {
 
     async save() {
       if (this.editedIndex > -1) {
-        await updateLine(this.editedItem.id, this.editedItem);
+        
         this.getLine();
       } else {
-        await createLine(this.editedItem);
+       
         this.getLine();
       }
       this.close();

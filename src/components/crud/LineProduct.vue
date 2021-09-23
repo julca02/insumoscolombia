@@ -1,9 +1,5 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="linea"
-    class="elevation-1"
-  >
+  <v-data-table :headers="headers" :items="linea" class="elevation-1">
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title>Linea producto</v-toolbar-title>
@@ -11,7 +7,7 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+            <v-btn color="#1E8449" dark class="mb-2" v-bind="attrs" v-on="on">
               Nueva linea
             </v-btn>
           </template>
@@ -45,7 +41,9 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancelar </v-btn>
+              <v-btn color="blue darken-1" text @click="close">
+                Cancelar
+              </v-btn>
               <v-btn color="blue darken-1" text @click="save"> Guardar </v-btn>
             </v-card-actions>
           </v-card>
@@ -53,12 +51,12 @@
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title class="text-h5"
-              >Are you sure you want to delete this item?</v-card-title
+              >Quieres eliminar esta lista??</v-card-title
             >
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete"
-                >Cancel</v-btn
+                >Cancelar</v-btn
               >
               <v-btn color="blue darken-1" text @click="deleteItemConfirm"
                 >OK</v-btn
@@ -70,11 +68,11 @@
       </v-toolbar>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      <v-icon small class="mr-2" @click="editItem(item)" color="#BBDEFB"> mdi-pencil </v-icon>
+      <v-icon small @click="deleteItem(item)" color="#E57373"> mdi-delete </v-icon>
     </template>
     <template v-slot:no-data>
-      <v-btn color="primary" @click="getLine"> Reset </v-btn>
+      <v-btn color="success" @click="getLine"> Reinicar </v-btn>
     </template>
   </v-data-table>
 </template>
@@ -172,7 +170,7 @@ export default {
     async save() {
       if (this.editedIndex > -1) {
         await updateLine(this.editedItem.id, this.editedItem);
-        this.getLine()
+        this.getLine();
       } else {
         await createLine(this.editedItem);
         this.getLine();
