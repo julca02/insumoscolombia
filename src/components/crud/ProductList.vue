@@ -20,7 +20,9 @@
         ></v-text-field>
 
         <v-spacer></v-spacer>
-        <v-btn rounded color="info" dark class="mb-2"> Imprimir </v-btn>
+        <v-btn rounded color="info" dark class="mb-2" @click="imprimirDoc">
+          Imprimir
+        </v-btn>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -158,6 +160,7 @@ import {
 } from "@/services/ProductsAPI";
 import { getLines } from "@/services/LinesAPI";
 import { getSubline } from "@/services/SublineAPI";
+import { jsPDF } from "jspdf";
 export default {
   data: () => ({
     dialog: false,
@@ -267,6 +270,38 @@ export default {
     async ListSublines() {
       const response = await getSubline();
       this.sublineas = response.data;
+    },
+    imprimirDoc() {
+
+      function createHeaders(keys) {
+        let result = [];
+        for (let i = 0; i < keys.length; i += 1) {
+          result.push({
+            id: keys[i],
+            name: keys[i],
+            prompt: keys[i],
+            width: 65,
+            align: "center",
+            padding: 0,
+          });
+        }
+        return result;
+      }
+
+      var headers = createHeaders([
+        "id",
+        "codigo_producto",
+        "id_linea",
+        "id_sublinea",
+        "descripcion",
+        "costo_ultimo",
+        "stock",
+        "created_at"
+      ]);
+
+      var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "landscape" });
+      doc.table(1, 1, JSON.parse(JSON.stringify(this.productos)), headers, { autoSize: true });
+      doc.save('producto.pdf')
     },
     editItem(item) {
       this.editedIndex = this.productos.indexOf(item);
