@@ -7,7 +7,7 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="#1E8449" dark class="mb-2" v-bind="attrs" v-on="on">
+            <v-btn color="#1E8449" rounded dark class="mb-2" v-bind="attrs" v-on="on">
               Nuevo movimiento
             </v-btn>
           </template>
@@ -19,7 +19,7 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="6">
                     <v-select
                       v-model="select"
                       label="Tipo"
@@ -31,19 +31,19 @@
                       single-line
                     ></v-select>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       v-model="editedItem.cedula_mov"
                       label="Cedula del comprador"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       v-model="editedItem.nombre_mov"
                       label="Nombre del comprador"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       v-model="editedItem.valor_total_mov"
                       label="Valor total"
@@ -72,7 +72,7 @@
               <v-btn color="blue darken-1" text @click="closeDelete"
                 >Cancel</v-btn
               >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+              <v-btn color="#1E8449" text @click="deleteItemConfirm"
                 >OK</v-btn
               >
               <v-spacer></v-spacer>
@@ -88,7 +88,7 @@
       <v-icon small @click="deleteItem(item)" color="red"> mdi-delete </v-icon>
     </template>
     <template v-slot:no-data>
-      <v-btn color="primary" @click="getMovements"> Reiniciar </v-btn>
+      <v-btn color="success" @click="getMovements"> Reiniciar </v-btn>
     </template>
   </v-data-table>
 </template>

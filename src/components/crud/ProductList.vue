@@ -80,13 +80,13 @@
                       auto-grow
                     ></v-textarea>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       v-model="editedItem.costo_ultimo"
                       label="Último costo"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       v-model="editedItem.stock"
                       label="Cantidad"
@@ -144,7 +144,7 @@
       </v-icon>
     </template>
     <template v-slot:no-data>
-      <v-btn color="primary" @click="getProducts"> Reiniciar </v-btn>
+      <v-btn color="success" @click="getProducts"> Reiniciar </v-btn>
     </template>
   </v-data-table>
 </template>

@@ -11,7 +11,7 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="#1E8449" dark class="mb-2" v-bind="attrs" v-on="on">
+            <v-btn color="#1E8449" rounded dark class="mb-2" v-bind="attrs" v-on="on">
               Nueva sublinea
             </v-btn>
           </template>
@@ -46,7 +46,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close"> Cancelar </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Guardar </v-btn>
+              <v-btn color="#1E8449" text @click="save"> Guardar </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -60,7 +60,7 @@
               <v-btn color="blue darken-1" text @click="closeDelete"
                 >Cancelar</v-btn
               >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+              <v-btn color="#E74C3C" text @click="deleteItemConfirm"
                 >OK</v-btn
               >
               <v-spacer></v-spacer>
@@ -74,7 +74,7 @@
       <v-icon small @click="deleteItem(item)"  color="#E57373"> mdi-delete </v-icon>
     </template>
     <template v-slot:no-data>
-      <v-btn color="primary" @click="getSubline"> Reiniciar </v-btn>
+      <v-btn color="success" @click="getSubline"> Reiniciar </v-btn>
     </template>
   </v-data-table>
 </template>

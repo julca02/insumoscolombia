@@ -7,7 +7,7 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="#1E8449" dark class="mb-2" v-bind="attrs" v-on="on">
+            <v-btn rounded color="#1E8449" dark class="mb-2" v-bind="attrs" v-on="on">
               Nueva linea
             </v-btn>
           </template>
@@ -44,21 +44,21 @@
               <v-btn color="blue darken-1" text @click="close">
                 Cancelar
               </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Guardar </v-btn>
+              <v-btn color="#1E8449" text @click="save"> Guardar </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
             <v-card-title class="text-h5"
-              >Quieres eliminar esta lista??</v-card-title
+              >Quieres eliminar esta lista?</v-card-title
             >
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete"
                 >Cancelar</v-btn
               >
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+              <v-btn color="#E74C3C" text @click="deleteItemConfirm"
                 >OK</v-btn
               >
               <v-spacer></v-spacer>

@@ -41,7 +41,7 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="6">
                     <v-select
                       v-model="movement"
                       label="Id movimiento"
@@ -51,7 +51,7 @@
                       return-object
                     ></v-select>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6" md="6">
                     <v-text-field
                       v-model="editedItem.id_producto"
                       :rules="codeRules"
@@ -127,7 +127,7 @@
       </v-icon>
     </template>
     <template v-slot:no-data>
-      <v-btn color="#1E8449" @click="getArticles"> Reiniciar </v-btn>
+      <v-btn color="success" @click="getArticles"> Reiniciar </v-btn>
     </template>
   </v-data-table>
 </template>
