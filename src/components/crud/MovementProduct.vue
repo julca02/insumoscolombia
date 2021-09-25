@@ -1,13 +1,27 @@
 <template>
-  <v-data-table :headers="headers" :items="movimiento" class="elevation-1">
+  <v-data-table :search="search" :headers="headers" :items="movimiento" class="elevation-1">
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title>Movimientos</v-toolbar-title>
-        <v-divider class="mx-4" inset vertical></v-divider>
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="#1E8449" rounded dark class="mb-2" v-bind="attrs" v-on="on">
+            <v-btn
+              color="#1E8449"
+              rounded
+              dark
+              class="mb-2"
+              v-bind="attrs"
+              v-on="on"
+            >
               Nuevo movimiento
             </v-btn>
           </template>
@@ -72,9 +86,7 @@
               <v-btn color="blue darken-1" text @click="closeDelete"
                 >Cancel</v-btn
               >
-              <v-btn color="#1E8449" text @click="deleteItemConfirm"
-                >OK</v-btn
-              >
+              <v-btn color="#1E8449" text @click="deleteItemConfirm">OK</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -98,11 +110,12 @@ import {
   getMovement,
   createMovement,
   updateMovement,
-  deleteMovement
+  deleteMovement,
 } from "@/services/MovementAPI";
 export default {
   data: () => ({
     dialog: false,
+    search: "",
     dialogDelete: false,
     headers: [
       {
@@ -179,8 +192,8 @@ export default {
     },
 
     async deleteItemConfirm() {
-      await deleteMovement(this.editedItem.id)
-      this.getMovements()
+      await deleteMovement(this.editedItem.id);
+      this.getMovements();
       this.closeDelete();
     },
 
@@ -207,7 +220,7 @@ export default {
         await updateMovement(this.editedItem.id, { ...data, tipo_mov: select });
         this.getMovements();
       } else {
-      const data = this.editedItem;
+        const data = this.editedItem;
         const select = this.select.abbr;
         await createMovement({ ...data, tipo_mov: select });
         this.getMovements();

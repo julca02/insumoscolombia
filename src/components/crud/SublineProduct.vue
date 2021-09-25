@@ -74,7 +74,7 @@
       <v-icon small @click="deleteItem(item)"  color="#E57373"> mdi-delete </v-icon>
     </template>
     <template v-slot:no-data>
-      <v-btn color="success" @click="getSubline"> Reiniciar </v-btn>
+      <v-btn color="success" @click="getLine"> Reiniciar </v-btn>
     </template>
   </v-data-table>
 </template>

@@ -20,6 +20,7 @@
         ></v-text-field>
 
         <v-spacer></v-spacer>
+        <v-btn rounded color="info" dark class="mb-2"> Imprimir </v-btn>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -50,24 +51,24 @@
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                      <v-select
-                        v-model="linea"
-                        label="lineas"
-                        :items="lineas"
-                        item-text="descripcion"
-                        item-value="codigo"
-                        return-object
-                      ></v-select>
+                    <v-select
+                      v-model="linea"
+                      label="lineas"
+                      :items="lineas"
+                      item-text="descripcion"
+                      item-value="codigo"
+                      return-object
+                    ></v-select>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-select
-                        v-model="sublinea"
-                        label="Sublineas"
-                        :items="sublineas"
-                        item-text="descripcion"
-                        item-value="codigo"
-                        return-object
-                      ></v-select>
+                      v-model="sublinea"
+                      label="Sublineas"
+                      :items="sublineas"
+                      item-text="descripcion"
+                      item-value="codigo"
+                      return-object
+                    ></v-select>
                   </v-col>
                   <v-col cols="12" sm="12" md="12">
                     <v-textarea
@@ -156,7 +157,7 @@ import {
   deleteProduct,
 } from "@/services/ProductsAPI";
 import { getLines } from "@/services/LinesAPI";
-import { getSubline } from '@/services/SublineAPI';
+import { getSubline } from "@/services/SublineAPI";
 export default {
   data: () => ({
     dialog: false,
@@ -193,7 +194,7 @@ export default {
       stock: 0,
       sublinea: {
         codigo: 0,
-        descripcion: ""
+        descripcion: "",
       },
       linea: {
         codigo: 0,
@@ -209,7 +210,7 @@ export default {
       stock: 0,
       sublinea: {
         codigo: 0,
-        descripcion: ""
+        descripcion: "",
       },
       linea: {
         codigo: 0,
@@ -250,7 +251,7 @@ export default {
   created() {
     this.getProducts();
     this.listLines();
-    this.ListSublines()
+    this.ListSublines();
   },
 
   methods: {
@@ -263,7 +264,7 @@ export default {
       let response = await getLines();
       this.lineas = response.data;
     },
-    async ListSublines(){
+    async ListSublines() {
       const response = await getSubline();
       this.sublineas = response.data;
     },
@@ -315,7 +316,7 @@ export default {
           id_linea: this.linea.codigo,
           id_sublinea: this.sublinea.codigo,
           costo_ultimo: this.editedItem.costo_ultimo,
-          stock: this.editedItem.stock
+          stock: this.editedItem.stock,
         });
         this.getProducts();
       }
