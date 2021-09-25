@@ -12,6 +12,9 @@
           hide-details
         ></v-text-field>
         <v-spacer></v-spacer>
+        <v-btn rounded color="info" dark class="mb-2" @click="imprimirDoc">
+          Imprimir
+        </v-btn>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -112,6 +115,7 @@ import {
   updateMovement,
   deleteMovement,
 } from "@/services/MovementAPI";
+import { jsPDF } from "jspdf";
 export default {
   data: () => ({
     dialog: false,
@@ -177,6 +181,38 @@ export default {
       let response = await getMovement();
       this.movimiento = response.data;
       this.loading = false;
+    },
+
+    
+    imprimirDoc() {
+
+      function createHeaders(keys) {
+        let result = [];
+        for (let i = 0; i < keys.length; i += 1) {
+          result.push({
+            id: keys[i],
+            name: keys[i],
+            prompt: keys[i],
+            width: 65,
+            align: "center",
+            padding: 0,
+          });
+        }
+        return result;
+      }
+
+      var headers = createHeaders([
+        "id",
+        "tipo_mov",
+        "cedula_mov",
+        "nombre_mov",
+        "valor_total_mov",
+        "created_at",
+      ]);
+
+      var doc = new jsPDF({ putOnlyUsedFonts: true, orientation: "landscape" });
+      doc.table(1, 1, JSON.parse(JSON.stringify(this.movimiento)), headers);
+      doc.save('movement.pdf')
     },
 
     editItem(item) {
