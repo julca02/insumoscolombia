@@ -85,12 +85,6 @@
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
                     <v-text-field
-                      v-model="editedItem.costo_ultimo"
-                      label="Último costo"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field
                       v-model="editedItem.stock"
                       label="Cantidad"
                     ></v-text-field>
@@ -193,7 +187,6 @@ export default {
       id: 0,
       codigo_producto: 0,
       descripcion: "",
-      costo_ultimo: 0,
       stock: 0,
       sublinea: {
         codigo: 0,
@@ -209,7 +202,6 @@ export default {
       codigo_producto: 0,
       id_sublinea: 0,
       descripcion: "",
-      costo_ultimo: 0,
       stock: 0,
       sublinea: {
         codigo: 0,
@@ -350,7 +342,6 @@ export default {
           descripcion: this.editedItem.descripcion,
           id_linea: this.linea.codigo,
           id_sublinea: this.sublinea.codigo,
-          costo_ultimo: this.editedItem.costo_ultimo,
           stock: this.editedItem.stock,
         });
         this.getProducts();

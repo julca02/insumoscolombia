@@ -135,7 +135,7 @@
 </template>
 <script>
 import {
-  getArticle, createArticle, updateArticle
+  getArticle, createArticle, updateArticle, deleteArticle
 } from "@/services/ArticleAPI";
 import { getMovement } from "@/services/MovementAPI";
 import { jsPDF } from "jspdf";
@@ -224,7 +224,6 @@ export default {
       let response = await getArticle();
       this.articles = response.data;
       this.loading = false;
-      console.log(JSON.parse(JSON.stringify(this.articles)))
     },
     async listArticles() {
       let response = await getMovement();
@@ -276,9 +275,10 @@ export default {
     },
 
     async deleteItemConfirm() {
-      /* await deleteMovement(this.editedItem.id); */
-      this.getArticles();
+      console.log(this.editedItem.id)
+      await deleteArticle(this.editedItem.id);
       this.closeDelete();
+      this.getArticles();
     },
 
     close() {

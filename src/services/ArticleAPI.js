@@ -12,6 +12,6 @@ export const updateArticle = async (id, articulo) => {
         console.log(error);
     }
 }
-/* export const deleteProduct = async (id) => {
-   return await axios.delete(`http://127.0.0.1:8000/api/productos/${id}`)
-} */
+export const deleteArticle = async (id) => {
+   return await axios.delete(`http://127.0.0.1:8000/api/articulo-movimiento/${id}`)
+}

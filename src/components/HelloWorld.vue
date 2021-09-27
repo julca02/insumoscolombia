@@ -1,40 +1,42 @@
 <template>
-<div>
-  <v-spacer></v-spacer>
-  <v-card elevation="24" max-width="444" class="mx-auto">
-    <v-system-bar lights-out></v-system-bar>
-    <v-carousel
-      :continuous="false"
-      :cycle="cycle"
-      :show-arrows="false"
-      hide-delimiter-background
-      delimiter-icon="mdi-minus"
-      height="300"
+<section id="hero">
+    <v-img
+      :min-height="minHeight"
+      :src="require('@/assets/logo.svg')"
+      class="white--text"
+      gradient="to bottom, rgba(5,121,17,1), rgba(0,0,0,.4)"
     >
-      <v-carousel-item v-for="(slide, i) in slides" :key="i">
-        <v-sheet :color="colors[i]" height="100%" tile>
-          <v-row class="fill-height" align="center" justify="center">
-            <div class="text-h2">{{ slide }} Slide</div>
-          </v-row>
-        </v-sheet>
-      </v-carousel-item>
-    </v-carousel>
-    <v-list two-line>
-      <v-list-item>
-        <v-list-item-avatar>
-          <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
-        </v-list-item-avatar>
-        <v-list-item-content>
-          <v-list-item-title>John Leider</v-list-item-title>
-          <v-list-item-subtitle>Author</v-list-item-subtitle>
-        </v-list-item-content>
-        <v-list-item-action>
-          <v-switch v-model="cycle" label="Cycle Slides" inset></v-switch>
-        </v-list-item-action>
-      </v-list-item>
-    </v-list>
-  </v-card>
-</div>
+      <v-container class="fill-height px-4 py-12">
+        <v-responsive
+          class="d-flex align-center mx-auto"
+          height="100%"
+          max-width="700"
+          width="100%"
+        >
+
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae nobis neque aspernatur in quas iure id aliquid, esse debitis, quibusdam mollitia! Quia ea expedita magnam totam, earum omnis et perspiciatis?
+          </p>
+
+          <div
+            :class="$vuetify.breakpoint.smAndDown ? 'flex-column align-start' : 'align-center'"
+            class="d-flex flex-wrap"
+          >
+
+            <v-btn
+              to="/productos"
+              class="font-weight-bold my-2 py-3"
+              x-large
+              color="success"
+              height="auto"
+            >
+              Ir a productos
+            </v-btn>
+          </div>
+        </v-responsive>
+      </v-container>
+    </v-img>
+  </section>
 </template>
 
 <script>
@@ -43,22 +45,14 @@
  
    data () {
       return {
-        colors: [
-          'green',
-          'secondary',
-          'yellow darken-4',
-          'red lighten-2',
-          'orange darken-1',
-        ],
-        cycle: false,
-        slides: [
-          'First',
-          'Second',
-          'Third',
-          'Fourth',
-          'Fifth',
-        ],
       }
     },
+    computed:{
+      minHeight () {
+        const height = this.$vuetify.breakpoint.mdAndUp ? '100vh' : '50vh'
+
+        return `calc(${height} - ${this.$vuetify.application.top}px)`
+      },
+    }
   } 
 </script>
