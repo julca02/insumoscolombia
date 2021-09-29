@@ -1,8 +1,9 @@
 <template>
 <section id="hero">
     <v-img
-      :min-height="minHeight"
-      :src="require('@/assets/logo.svg')"
+      min-height="600"
+      width="100%"
+      src="@/assets/logo.svg"
       class="white--text"
       gradient="to bottom, rgba(5,121,17,1), rgba(0,0,0,.4)"
     >
