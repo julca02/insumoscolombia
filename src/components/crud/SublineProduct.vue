@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { getSubline, createSubline, updateSubline } from "@/services/SublineAPI";
+import { getSubline, createSubline, updateSubline, deleteSubline } from "@/services/SublineAPI";
 export default {
   data: () => ({
     dialog: false,
@@ -149,8 +149,9 @@ export default {
       this.dialogDelete = true;
     },
 
-    deleteItemConfirm() {
-      this.linea.splice(this.editedIndex, 1);
+    async deleteItemConfirm() {
+      await deleteSubline(this.editedItem.id);
+      this.getLine();
       this.closeDelete();
     },
 

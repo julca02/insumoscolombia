@@ -12,3 +12,6 @@ export const updateSubline = async (id, linea) => {
         console.log(error);
     }
 }
+export const deleteSubline = async (id) => {
+    return await axios.delete(`http://127.0.0.1:8000/api/sublinea/${id}`)
+ }

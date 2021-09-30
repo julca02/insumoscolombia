@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { getLines, createLine, updateLine } from "@/services/LinesAPI";
+import { getLines, createLine, updateLine, deleteLine } from "@/services/LinesAPI";
 export default {
   data: () => ({
     dialog: false,
@@ -146,8 +146,9 @@ export default {
       this.dialogDelete = true;
     },
 
-    deleteItemConfirm() {
-      this.linea.splice(this.editedIndex, 1);
+    async deleteItemConfirm() {
+      await deleteLine(this.editedItem.id);
+      this.getLine();
       this.closeDelete();
     },
 
